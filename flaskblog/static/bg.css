@@ -1,0 +1,20 @@
+html, body, .hey { height: 100%;}
+
+.hey {
+    opacity: .3; /*just to see there is no overlap*/
+    position: relative;
+    z-index: 2;
+    background: url(http://www.dummyimage.com/643x12/001aff/ffffff.png&text=643+x+12) top left no-repeat, url(http://www.dummyimage.com/643x12/22ff00/ffffff.png&text=643+x+12)  bottom left no-repeat;
+}
+
+.hey:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 12px;
+    right: 0;
+    bottom: 12px;
+    left: 0;
+     background: url(http://www.dummyimage.com/643x12/ff0000/ffffff.png&text=643+x+12) top left repeat-y;
+}
+

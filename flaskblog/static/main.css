@@ -1,0 +1,161 @@
+body {
+    background: #fafafa;
+    color: #333333;
+    margin-top: 5rem;
+    
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+
+  
+  .bg-steel {
+    background-color: #5f788a;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+  .dropdown-submenu {
+    position: relative;
+  }
+  
+  .dropdown-submenu xa::after {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 6px;
+    top: .8em;
+  }
+  
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: .1rem;
+    margin-right: .1rem;
+  }
+.dropdown-menu{
+  width:20px;
+}
+#friendrequest{
+  position: relative;
+  right:170px;
+  top:10px;
+  background-color:transparent;
+}
+#friendimage{
+  height:60px;
+  width:60px;
+}
+#community {
+  position:absolute;
+  right:180px;
+  top:33px;
+}
+#profile-image{
+  height:60px;
+  width:60px;
+}
+#chat{
+  position:absolute;
+  right:120px;
+  top:21px;
+}
+.chat-image{
+  background-color: white;
+  width:50px;
+  height:50px;
+  clip-path: polygon(22% 26%, 79% 26%, 86% 35%, 86% 72%, 80% 78%, 22% 78%, 15% 71%, 15% 35%);
+}
+.req{
+  position: relative;
+  left: 4px;
+  bottom:5px;
+  color:white; 
+}
+.badgefriend{
+  position: absolute;
+  top: 14px;
+  width: 17px;
+  height: 17px;
+  right: 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+ 
+}
+.badge {
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+.feedback-header{
+  margin-top: 1em;
+
+}  

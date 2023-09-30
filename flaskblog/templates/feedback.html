@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+<script>
+    function submit_entry(){
+        var name = document.getElementById("name");
+        var message = document.getElementById("message");
+        var entry = {
+            name: name.value,
+            message: message.value
+        };
+        fetch(`${window.origin}/feedback/create-entry`,{
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(entry),
+            cahce: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        })
+
+        .then(function (response){
+            if ( response.status !== 200 ){
+                console.log(`Response status was not 200:${response.status}`);
+                return;
+            }
+            response.json().then(function (data){
+                console.log(data)
+            })
+        })
+        $('#name').val('');
+        $('#message').val('');
+    }
+    </script>
+    <h1>Feedback  Page</h1>
+    
+    <div class="container">
+    <div class="row">
+    <div class="col">
+    
+    <h6 class="feedback-header">Your feedback matters to us</h6>
+    <div class="mb-3 p-1">
+    
+    <div class="form-group">
+    <label>Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Enter your name">
+    </div>
+    
+    <div class="form-group">
+    <label>Feedback</label>
+    <textarea class="form-control" id="message" cols="30" rows="3" placeholder="Enter your message"></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="submit_entry();">Send Feedback</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    {% endblock content %}
+  
+<!-- Files can be uploaded using an HTML <input type="file" multiple /> input element, FormData() and fetch().
+
+const formData = new FormData();
+const photos = document.querySelector('input[type="file"][multiple]');
+
+formData.append('title', 'My Vegas Vacation');
+for (let i = 0; i < photos.files.length; i++) {
+  formData.append('photos', photos.files[i]);
+}
+
+fetch('https://example.com/posts', {
+  method: 'POST',
+  body: formData,
+})
+.then(response => response.json())
+.then(result => {
+  console.log('Success:', result);
+})
+.catch(error => {
+  console.error('Error:', error);
+});-->

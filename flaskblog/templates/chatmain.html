@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Your Friend List</h1>
+    <div class="p-2">
+    {% for friend in list %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + friend.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{url_for('usersroute.message')}}">{{ friend.username }}</a>
+            </div>
+            
+          </div>
+        </article>
+    {% endfor %}
+    </div>
+    <div class="border-top pt-3 p-2">
+    <small class="text-muted float-right">
+            Wanna connect to more people? <a class="ml-2" href="{{ url_for('usersroute.friends') }}">Click Here</a>
+        </small>
+        
+    </div>
+   
+{% endblock content %}

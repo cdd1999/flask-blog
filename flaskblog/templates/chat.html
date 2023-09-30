@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script type='text/javascript'>
+    $(document).ready(function() {
+        const username = document.querySelector('#get-username').innerHTML;
+        var socket = io.connect('http://127.0.0.1:5000');
+        socket.on('connect', function() {
+            console.log('connected');
+        });
+        let msg = document.getElementById("user_message");
+        msg.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            document.getElementById("send_message").click();
+        }
+        });
+        
+        socket.on('message',function(data) {
+            const p = document.createElement('p');
+            const span_username = document.createElement('span');
+            const span_timestamp = document.createElement('span');
+            const br = document.createElement('br');
+            // Display user's own message
+            if (data.user == username) {
+                p.setAttribute("class", "my-msg");
+
+                // Username
+                span_username.setAttribute("class", "my-username");
+                span_username.innerText = data.user;
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data.time_stamp;
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+                document.querySelector('#display-message-section').append(p);
+            }
+            else{
+                p.setAttribute("class", "others-msg");
+
+                // Username
+                span_username.setAttribute("class", "other-username");
+                span_username.innerText = data.user;
+
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data.time_stamp;
+
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+
+                //Append
+                document.querySelector('#display-message-section').append(p);   
+            }
+            scrollDownChatWindow();
+            console.log('Received message');
+        
+        });
+        socket.on('display-chat',function(data) {
+            var length=data["messages"].length;
+            var const1=data["friend_image"];
+
+            $("#friend-profile").html('');
+            $("#friend-profile").append('<img class="rounded-circle" id="message-profile" height="80" width="80"src="' + "/static/profile_pics/" +const1+'" />')
+            const span_username = document.createElement('span');
+            span_username.setAttribute("class", "friend-profile-name");
+            span_username.innerText = data['friend_name'];
+            $("#friend-profile").append(span_username.outerHTML)
+            $.each(data['messages'],function(index,length){
+                const p = document.createElement('p');
+                const span_username = document.createElement('span');
+                const span_timestamp = document.createElement('span');
+                const br = document.createElement('br')
+                if (data['messages'][index][2] == {{ current_user.id }}) {
+                    p.setAttribute("class", "my-msg");
+
+                    // Username
+                    span_username.setAttribute("class", "my-username");
+                    span_username.innerText = username;
+
+                    // Timestamp
+                    span_timestamp.setAttribute("class", "timestamp");
+                    span_timestamp.innerText = data["messages"][index][1];
+
+                    // HTML to append
+                    p.innerHTML += span_username.outerHTML + br.outerHTML + data["messages"][index][0] + br.outerHTML + span_timestamp.outerHTML
+
+                    //Append
+                    document.querySelector('#display-message-section').append(p);
+            }
+            // Display other users' messages
+            else{
+                p.setAttribute("class", "others-msg");
+
+                // Username
+                span_username.setAttribute("class", "other-username");
+                span_username.innerText = data['friend_name'];
+
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data["messages"][index][1];
+
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data["messages"][index][0] + br.outerHTML + span_timestamp.outerHTML;
+
+                //Append
+                document.querySelector('#display-message-section').append(p);
+            }
+                
+            });
+            scrollDownChatWindow(); 
+        });
+
+        document.querySelectorAll('.select-friend').forEach(p => {
+        p.onclick = () => {
+            let friend = p.innerHTML;
+            $('.select-friend').data('recent-click',friend);
+            document.querySelector('#display-message-section').innerHTML = '';
+            selectfriend(friend);
+            var id = $('.select').data('id');
+            
+        }});
+        function selectfriend(friend){
+            socket.emit('display-chat',{ friend_name: friend  });
+        }
+        $('#send_message').on('click',function(p,data){
+            var friend=$('.select-friend').data('recent-click');
+            socket.send( {'msg': $('#user_message').val(),'friend_name': friend,'user':"{{ current_user.username }}"} );
+            $('#user_message').val('');
+        });
+        function scrollDownChatWindow() {
+            const chatWindow = document.querySelector("#display-message-section");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+    });
+</script>
+<div class="wrapper">
+
+            <!-- Main section start -->
+            <div id="main-section">
+                <!-- Sidebar start -->
+            
+                <nav id="sidebar">
+                    <h4 class="p-1">Lets Chat</h4>
+                    {% for friend in friends %}
+                        <div class="entry"><img class="sidebar-chat-image rounded-circle" src="{{ url_for('static', filename='profile_pics/' + friend.image_file) }}">
+                        <p id="{{ friend.username|title }}" class="select-friend cursor-pointer">{{ friend.username|title }}</p>
+                        </div>                   
+                    {% endfor %}
+                </nav>
+                <!-- Sidebar end -->
+
+                <!-- Rightside pannel start -->
+                <div id="rightside-pannel">
+                    <div id="friend-profile">
+                    </div>
+                    <!-- Display message start-->
+                    <div id="display-message-section">
+                    </div>
+                    <!-- Display message end -->
+
+                    <!-- Type message start -->
+                   <div id="input-area" class="input-group mb-3">
+                        <input type="text" id="user_message" class="form-control" placeholder="Type here..." aria-label="Type a message" aria-describedby="basic-addon2" autocomplete="off">
+                        <div class="input-group-append">
+                            <button id="send_message" class="btn btn-warning" type="button">SEND <i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <!-- Type message end -->
+                </div>
+                <!-- Rightside pannel end -->
+            </div>
+            <!-- Main section end -->
+        </div>
+        <!-- Wrapper end -->
+
+        <!-- Get username -->
+        <span id="get-username">{{current_user.username}}</span>
+
+
+{% endblock content %}

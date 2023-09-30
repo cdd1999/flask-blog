@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Stats Page</h1>
+    <h6 class="p-3">What stat would u like?</h6>
+
+    <div class="row">
+    
+    <select name ="hi" id="hi" class="selectpicker" data-width="75%" data-style="btn-success">
+    <option value="none" selected disabled hidden>Select a Stat</option>
+    <option value="1">Goals</option>
+    <option value="2">Assists</option>
+    <option value="3">Saves</option>
+    <option value="4">Red cards</option>
+    </select>
+    
+    <input type="button" class="btn btn-info" value="Hit me" onclick=" myFunction()">
+    
+    </div>
+    <script type="text/javascript">
+    function myFunction(){
+    var x = document.getElementById("hi").value;
+    
+    if (x=='4'){
+        location.href="{{ url_for('stat.red_cards',year=year,leagues=leagues) }}";
+    }
+    else if (x=='3'){
+        location.href="{{ url_for('stat.saves',year=year,leagues=leagues) }}";
+    }
+    else if (x=='1'){
+        location.href="{{ url_for('stat.goals',year=year,leagues=leagues) }}";
+    }
+    else if (x=='2'){
+        location.href="{{ url_for('stat.assists',year=year,leagues=leagues) }}";
+    }
+    else{
+
+    }
+    }
+    
+    </script>
+    
+   
+    
+{% endblock content %}

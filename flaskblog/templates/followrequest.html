@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Friend request</h1>
+{%if friends%}
+{% for friend in friends %}
+<div id={{friend.id}} class="w3-card-4 w3-dark-grey">
+<div class="w3-container w3-center">
+
+  <img class="rounded-circle article-img"src="{{ url_for('static', filename='profile_pics/' + friend.image_file) }}" >
+  <h5>{{friend.username}}</h5>
+
+  <button class="w3-button w3-green" onclick="accepted('{{friend.id}}')">Accept</button>
+  <button class="w3-button w3-red" onclick="rejected('{{friend.id}}')">Decline</button>
+</div>
+</div>
+{%endfor%}
+{%else%}
+<p>You have no more requests</p>
+{%endif%}
+
+<script>
+
+function accepted(parameter){
+    var div = document.getElementById(parameter)
+    div.remove()
+    
+    var entry = {
+        id: parameter
+    };
+    div.remove()
+    fetch(`${window.origin}/friendrequest/accept`,{
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(entry),
+        cahce: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+
+    .then(function (response){
+        if ( response.status !== 200 ){
+            console.log(`Response status was not 200:${response.status}`);
+            return;
+        }
+        response.json().then(function (data){
+            console.log(data)
+        })
+    })
+
+}
+function rejected(parameter){
+    var div = document.getElementById(parameter)
+    div.remove()
+    
+    var entry = {
+        id: parameter
+    };
+    fetch(`${window.origin}/friendrequest/reject`,{
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(entry),
+        cahce: "no-cache",
+        headers: new Headers({
+            "content-type": "application/json"
+        })
+    })
+
+    .then(function (response){
+        if ( response.status !== 200 ){
+            console.log(`Response status was not 200:${response.status}`);
+            return;
+        }
+        response.json().then(function (data){
+            console.log('Deleted')
+            console.log(data)
+        })
+    })
+
+}
+</script>
+{% endblock content %}

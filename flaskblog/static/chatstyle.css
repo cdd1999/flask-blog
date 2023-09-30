@@ -1,0 +1,192 @@
+.sidebar-chat-image{
+    margin-left: 2em;
+    
+}
+.wrapper{
+ background-color: white;
+ border-width: 4px;
+ border-style: solid;
+ border-color: blue;
+
+ 
+}
+#main-section {
+    overflow: hidden; /* Makee this div contain its floated children */
+}
+
+#sidebar {
+    
+    overflow: hidden;
+    float: left; /* Make this div as wide as its contents */
+    min-height: 107.2vh;/*for thr border*/
+    background-color: #f5f2d0 ;
+    
+    
+    border-right: 3px solid black;
+}
+#sidebar h4{
+    background-color:darkcyan;    
+    position: relative;
+    text-align:center;
+    border-bottom: 3px solid black;
+    height: 102px;
+    width:200px;
+}
+#sidebar p {
+    position: relative;
+    text-align:center;
+    border-bottom: 3px solid black;
+    height: 50px;
+    width:200px;
+    border-bottom: 2px solid black;
+}
+
+
+
+
+
+
+#sidebar.view-sidebar {display: none;}
+
+#show-sidebar-button {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s;
+    color: #335177;
+}
+
+@media (max-width: 567px) {
+    #sidebar {
+        display: none;
+    }
+
+    #sidebar.view-sidebar {
+        display: block;
+    }
+
+    #show-sidebar-button {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#rightside-pannel {
+    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
+    background-image: url('chat-background.jpeg');
+  
+}
+.sidebar-chat-image{
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+#display-message-section {
+    min-height: 82vh;
+    max-height: 82vh;
+    overflow-y: auto; /*Make  this section scrolable */
+}
+
+#input-area {
+    padding-left: 1em;
+    padding-right: 1em;
+    bottom: 0;
+}
+
+input[type=text]:focus{
+    border-color: #ffc107;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 10px #ffc107;
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.friend-profile-name{
+    margin-left:2em;
+    margin-bottom:2em;
+    font-weight:bold;
+    font-size: larger;
+    color:white;
+
+}
+#message-profile{/*for image*/
+    margin-top: 0.5em;
+    margin-left: 2em;
+}
+#friend-profile{/*for background*/
+    height:100px;
+    background-color:darkcyan
+}
+.others-msg {
+    margin-right:7em;
+    margin-left: 1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    border-radius: 5px;
+    border-color: grey;
+    border-width: 0.5px;
+    border-style: solid;
+    background-color: #C2DBFB;
+    /* animation */
+    animation-name: fadeIn;
+    animation-duration: 0.75s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.my-msg {
+    margin-left:7em;
+    margin-right:1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    border-radius: 5px;
+    border-color: #206ED2;
+    border-width: 1px;
+    border-style: solid;
+    /* animation */
+    animation-name: fadeIn;
+    animation-duration: 0.75s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    background-color:lightgreen;
+}
+
+.system-msg {
+    margin-right:7em;
+    margin-left: 1em;
+    padding: 0.5em 0.5em 0.5em 1em;
+    color: #656d78;
+    font-size:0.9em;
+}
+
+.timestamp {
+   margin-left: 25em; 
+    color: #656d78;
+    font-size:0.7em;
+   
+}
+
+.other-username {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #206ED2;
+}
+
+.my-username {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #FF6B13;
+}
+
+#msg-input {
+    border-color: #ffc107;
+    border-width: 5px;
+}
+
+#get-username {
+    display: none !important;
+}

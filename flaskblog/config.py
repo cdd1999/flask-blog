@@ -2,8 +2,8 @@ import os
 
 
 class Config:
-    SECRET_KEY = '5791628bb0b13ce0c676dfde280ba245'
-    SQLALCHEMY_DATABASE_URI = "postgresql://cdd1999:KYBqsu5Dhgj8@ep-hidden-art-50093384.us-east-2.aws.neon.tech/football?sslmode=require"
+    SECRET_KEY = os.environ.get('secretKey')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('databaseUri')
     #os.environ.get
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
     MAIL_PORT = 2525

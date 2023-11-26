@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt, socketio,limiter
 from flaskblog.notifications import notification,friendreq
@@ -15,7 +15,7 @@ from flaskblog.usersroute.forms import (
     GroupForm
 )
 from flask import jsonify,make_response,request
-from sqlalchemy import text,or_
+from sqlalchemy import text,or_, create_engine
 from flaskblog.usersroute.utils import save_picture, send_reset_email
 from flask_socketio import SocketIO, send, emit
 import datetime
@@ -25,6 +25,8 @@ import json
 from json import JSONEncoder
 import jsonpickle
 usersroute = Blueprint("usersroute", __name__)
+engine = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"])
+
 @usersroute.route("/slow")
 @limiter.limit("1 per day")
 def slow():
@@ -265,14 +267,14 @@ def message():
          by max(message_date)) and (user_id1=:a or user_id2=:a) order by message_date desc;"
     )
     friends = []
-    results = db.engine.execute(sql, a=current_user.id)
-    
+    with engine.connect() as conn:
+        results = conn.execute(sql, { "a": current_user.id })
     for r in results:
-        if r["user_id1"] != current_user.id:
-            friend_name = Users.query.filter_by(id=r["user_id1"]).first()
+        if r.user_id1 != current_user.id:
+            friend_name = Users.query.filter_by(id=r.user_id1).first()
             friends.append(friend_name)
-        if r["user_id2"] != current_user.id:
-            friend_name = Users.query.filter_by(id=r["user_id2"]).first()
+        if r.user_id2 != current_user.id:
+            friend_name = Users.query.filter_by(id=r.user_id2).first()
             friends.append(friend_name)
     #if person hasnt sent messages till now but still friend
     user1 = Friends.query.filter_by(user_id1=current_user.id).all()
@@ -293,6 +295,7 @@ def message():
     #    friends.append(a)
     
     return render_template("chat.html", friends=friends,notifications=notification(),req=friendreq())
+
 @usersroute.route("/friendrequest")
 def friendrequest():
     f=FriendRequest.query.filter_by(user_id2=current_user.id).order_by(FriendRequest.id).all()
@@ -301,6 +304,7 @@ def friendrequest():
         friend=Users.query.filter_by(id=user.user_id1).first()
         l.append(friend)
     return render_template("followrequest.html",friends=l,notifications=notification(),req=friendreq())
+
 @usersroute.route("/friendrequest/accept",methods=["POST"])
 def friendrequestaccept():
     req=request.get_json()
@@ -310,8 +314,9 @@ def friendrequestaccept():
     f=Friends(user_id1=req['id'],user_id2=current_user.id)
     db.session.add(f)
     db.session.commit()
-    res=make_response(jsonify(req),200)#200response is succes
+    res=make_response(jsonify(req),200)
     return res
+
 @usersroute.route("/friendrequest/reject",methods=["POST"])
 def friendrequestreject():
     req=request.get_json()
@@ -320,6 +325,7 @@ def friendrequestreject():
     db.session.commit()
     res=make_response(jsonify(req),200)
     return res
+
 @usersroute.route("/user/<string:username>")
 def user_posts(username):
     page = request.args.get("page", 1, type=int)
@@ -357,9 +363,7 @@ def reset_token(token):
         return redirect(url_for("usersroute.reset_request"))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode(
-            "utf-8"
-        )
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user.password = hashed_password
         db.session.commit()
         flash("Your password has been updated! You are now able to log in", "success")

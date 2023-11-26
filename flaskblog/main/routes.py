@@ -29,6 +29,7 @@ def home():
 @main.route("/ml")
 def ml():
     return render_template("about.html",notifications=notification(),req=friendreq())
+
 @main.route("/feedback")
 def feedback():
     return render_template("feedback.html",notifications=notification(),req=friendreq())
@@ -85,4 +86,4 @@ def stat():
 def about():
     return render_template(
         "about.html", title="About", posts=Posts,notifications=notification(),req=friendreq()
-    )  # encountered error with Posts
+    )

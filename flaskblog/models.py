@@ -1,5 +1,5 @@
 from datetime import datetime
-from itsdangerous import URLSafeTimedSerializer as Serializer
+from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 from flaskblog import db, login_manager
 from flask_login import UserMixin
@@ -20,9 +20,9 @@ class Users(db.Model, UserMixin):  # default implementations for the methods for
         "Posts", backref="author", lazy=True
     )  # if false then tables are joined
     #groupmemberstable = db.relationship("GroupMembersTable", backref="authorgum", lazy=True)
-    def get_reset_token(self, expires_sec=1800):
-        s = Serializer(current_app.config["SECRET_KEY"], expires_sec)
-        return s.dumps({"user_id": self.id}).decode("utf-8")
+    def get_reset_token(self, expires_sec = 1800):
+        s = Serializer(current_app.config["SECRET_KEY"])
+        return s.dumps({ "user_id": self.id })
 
     @staticmethod
     def verify_reset_token(token):

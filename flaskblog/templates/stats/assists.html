@@ -6,8 +6,8 @@
     <div class"row">
     <select name ="hi" id="hi" class="selectpicker" data-width="75%" data-style="btn-success">
     <option value="1">Goals</option>
-    <option value="2">Assists</option>
-    <option value="3" selected>Saves</option>
+    <option value="2" selected>Assists</option>
+    <option value="3">Saves</option>
     <option value="4">Red cards</option>
     </select>
     <input type="button" class="btn btn-info" value="Hit me" onclick=" myFunction()">
@@ -16,13 +16,13 @@
     function myFunction(){
     var x = document.getElementById("hi").value;
     if (x=='4'){
-        location.href="{{ url_for('stat.red_cards',year=year,leagues=leagues)}}";
+        location.href="{{ url_for('stat.red_cards',year=year,leagues=leagues  )}}";
+    }
+    else if (x=='3'){
+        location.href="{{ url_for('stat.saves',year=year,leagues=leagues  )}}";
     }
     else if (x=='1'){
-        location.href="{{ url_for('stat.goals',year=year,leagues=leagues)}}";
-    }
-    else if (x=='2'){
-        location.href="{{ url_for('stat.assists',year=year,leagues=leagues)}}";
+        location.href="{{ url_for('stat.goals',year=year,leagues=leagues  ) }}";
     }
     else{
     }
@@ -32,21 +32,21 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Saves</th>
+        <th>Assists</th>
         <th>Appearances</th>
         <th>Team Name</th>
         <th>Position</th>
     </tr>
     </thead>
     <tbody>
-        {% for r in result.items %} 
+        {% for row in result.items %} 
             <tr>
                 
-                <td>{{r.g.fname}} {{r.g.lname}}</td>
-                <td>{{r.saves}}</td>
-                <td>{{r.appearances}}</td>
-                <td>{{r.g.team_name}}</td>
-                <td>{{r.g.position}}</td>       
+                <td>{{row.fname}} {{row.lname}}</td>
+                <td>{{row.assists}}</td>
+                <td>{{row.appearances}}</td>
+                <td>{{row.team_name}}</td>
+                <td>{{row.position}}</td>       
             </tr>
         {% endfor %}
     </tbody>
@@ -54,7 +54,7 @@
     <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     {% if result.has_prev %}
-                      <li class="page-item"> <a class="page-link" href="{{ url_for('stat.saves', page=result.prev_num,year=year,leagues=leagues ) }}">Previous</a></li>
+                      <li class="page-item"> <a class="page-link" href="{{ url_for('stat.assists', page=result.prev_num,year=year,leagues=leagues ) }}">Previous</a></li>
                     {% else %}
                       <li class="page-item"><a class="page-link btn disabled" href="#">Previous</a></li>
                     {% endif %}
@@ -63,9 +63,9 @@
      {% if page %}
       
       {% if page==result.page %}
-       <li class="page-item active"><a class="page-link" href="{{ url_for('stat.saves', page=page,year=year,leagues=leagues ) }}">{{ page }}</a></li>
+       <li class="page-item active"><a class="page-link" href="{{ url_for('stat.assists', page=page,year=year,leagues=leagues ) }}">{{ page }}</a></li>
       {% else %}
-       <li class="page-item"><a class="page-link" href="{{ url_for('stat.saves', page=page,year=year ,leagues=leagues) }}">{{ page }}</a></li>
+       <li class="page-item"><a class="page-link" href="{{ url_for('stat.assists', page=page,year=year,leagues=leagues ) }}">{{ page }}</a></li>
       {% endif %}
        
      {% else %}
@@ -74,7 +74,7 @@
      {% endfor %}
  
                     {% if result.has_next %}
-                      <li class="page-item"> <a class="page-link" href="{{ url_for('stat.saves', page=result.next_num,year=year,leagues=leagues)}}">Next</a></li>
+                      <li class="page-item"> <a class="page-link" href="{{ url_for('stat.assists', page=result.next_num,year=year,leagues=leagues ) }}">Next</a></li>
                     {% else %}
                       <li class="page-item"><a class="page-link btn disabled" href="#">Next</a></li>
                     {% endif %}

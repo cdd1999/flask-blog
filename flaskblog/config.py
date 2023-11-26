@@ -2,19 +2,15 @@ import os
 
 
 class Config:
-    
-    #app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' 
-    #if u wanna use sqlite which gives u local file no nee for app context
-    
-    SECRET_KEY = 'SECRET_KEY'#os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:cdd1999@localhost:5432/flask"#os.environ.get('SQLALCHEMY_DATABASE_URI')
-    #environ.get values have to be put in evironment variables
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 587
+    SECRET_KEY = '5791628bb0b13ce0c676dfde280ba245'
+    SQLALCHEMY_DATABASE_URI = "postgresql://cdd1999:KYBqsu5Dhgj8@ep-hidden-art-50093384.us-east-2.aws.neon.tech/football?sslmode=require"
+    #os.environ.get
+    MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
+    MAIL_PORT = 2525
+    MAIL_USERNAME = '86f9943eb8ec59'
+    MAIL_PASSWORD = 'fd9703a23e79aa'
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('EMAIL_USER')
-    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+    MAIL_USE_SSL = False
 '''
     Hooking in WSGI Middleware¶
 To add WSGI middleware to your Flask application, wrap the application’s wsgi_app attribute. 

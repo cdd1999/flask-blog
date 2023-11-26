@@ -16,3 +16,4 @@ nltk
 psycopg2
 Pillow
 python-engineio
+waitress

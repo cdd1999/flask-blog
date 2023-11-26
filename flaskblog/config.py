@@ -2,13 +2,12 @@ import os
 
 
 class Config:
-    SECRET_KEY = os.environ.get('secretKey')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('databaseUri')
-    #os.environ.get
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
     MAIL_PORT = 2525
-    MAIL_USERNAME = '86f9943eb8ec59'
-    MAIL_PASSWORD = 'fd9703a23e79aa'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
 '''
